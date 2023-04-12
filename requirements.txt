@@ -1,0 +1,16 @@
+
+matplotlib==3.7.1
+matplotlib-inline==0.1.6
+numpy==1.24.2
+open-clip-torch==2.16.0
+opencv-python==4.7.0.72
+Pillow==9.4.0
+pytorch-lightning==2.0.0
+torch==2.0.0+cu118
+torchaudio==2.0.1+cu118
+torchdiffeq==0.2.3
+torchmetrics==0.11.4
+torchsde==0.2.5
+torchvision==0.15.1+cu118
+transformers==4.27.1
+
