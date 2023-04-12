@@ -1,0 +1,2 @@
+# ComfyUI-CLIPSeg
+ComfyUI CLIPSeg
