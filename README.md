@@ -1,5 +1,5 @@
 # Custom Nodes for [ComfyUI](https://github.com/comfyanonymous/ComfyUI): CLIPSeg and CombineSegMasks
-## This repository contains two custom nodes for ComfyUI that utilize the CLIPSeg model to generate masks for image inpainting tasks based on text prompts.
+## This repository contains two custom nodes for ComfyUI that utilize the [CLIPSeg model](https://huggingface.co/docs/transformers/main/en/model_doc/clipseg) to generate masks for image inpainting tasks based on text prompts.
 
 
 ### 1. CLIPSeg
@@ -36,7 +36,7 @@ The CombineSegMasks node combines two or optionally three masks into a single ma
 - image_out_bw: A torch.Tensor representing the binary mask overlay of the combined mask on the input image.
 
 
-## Usage
+## Installation
 To use these custom nodes in your ComfyUI project, follow these steps:
 
 1. Clone this repository or download the source code.
@@ -44,6 +44,12 @@ To use these custom nodes in your ComfyUI project, follow these steps:
 3. ???
 4. Profit
 
+
+## Usage
+Below is an example for the intended workflow. The [json file](https://github.com/biegert/ComfyUI-CLIPSeg/blob/main/workflow/inpaint_CLIPSeg.json) for the example can be found inside the 'workflow' directory 
+![](https://github.com/biegert/ComfyUI-CLIPSeg/blob/main/workflow/workflow_0.png?raw=true)
+![](https://github.com/biegert/ComfyUI-CLIPSeg/blob/main/workflow/workflow_1.png?raw=true)
+![](https://github.com/biegert/ComfyUI-CLIPSeg/blob/main/workflow/workflow_2.png?raw=true)
 
 ## Requirements
 - PyTorch
