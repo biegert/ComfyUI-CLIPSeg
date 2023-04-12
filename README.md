@@ -1,4 +1,4 @@
-# Custom Nodes for ComfyUI: CLIPSeg and CombineSegMasks
+# Custom Nodes for [ComfyUI](https://github.com/comfyanonymous/ComfyUI): CLIPSeg and CombineSegMasks
 ## This repository contains two custom nodes for ComfyUI that utilize the CLIPSeg model to generate masks for image inpainting tasks based on text prompts.
 
 
