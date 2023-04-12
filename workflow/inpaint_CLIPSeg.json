@@ -1,0 +1,917 @@
+{
+  "last_node_id": 52,
+  "last_link_id": 101,
+  "nodes": [
+    {
+      "id": 41,
+      "type": "PreviewImage",
+      "pos": [
+        539.7935242476254,
+        795.1735034593788
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 70
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 42,
+      "type": "PreviewImage",
+      "pos": [
+        539.7935242476254,
+        1097.1735034593798
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 71
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 31,
+      "type": "PreviewImage",
+      "pos": [
+        -217.75398054252872,
+        828.5056917857538
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 63
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 39,
+      "type": "PreviewImage",
+      "pos": [
+        -222.7539805425287,
+        1134.5056917857544
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 64
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 40,
+      "type": "PreviewImage",
+      "pos": [
+        -224.7539805425287,
+        1433.505691785754
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 65
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 28,
+      "type": "PreviewImage",
+      "pos": [
+        -221.06365653089293,
+        531.0229942251278
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 62
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 13,
+      "type": "PreviewImage",
+      "pos": [
+        -910,
+        503
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 10
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 12,
+      "type": "LoadImage",
+      "pos": [
+        -1242,
+        1029
+      ],
+      "size": {
+        "0": 315,
+        "1": 102
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            10,
+            75,
+            76,
+            77,
+            79
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "inpain_model_woman.png",
+        "image"
+      ]
+    },
+    {
+      "id": 47,
+      "type": "CLIPSeg",
+      "pos": [
+        -584.7539805425284,
+        1198.505691785754
+      ],
+      "size": {
+        "0": 315,
+        "1": 170
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 76
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Mask",
+          "type": "MASK",
+          "links": [
+            87
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "Heatmap Mask",
+          "type": "IMAGE",
+          "links": [
+            64
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "BW Mask",
+          "type": "IMAGE",
+          "links": [
+            65
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPSeg"
+      },
+      "widgets_values": [
+        "sky",
+        7,
+        0.4,
+        5
+      ]
+    },
+    {
+      "id": 46,
+      "type": "CLIPSeg",
+      "pos": [
+        -606.1704928040243,
+        682.4190049831237
+      ],
+      "size": {
+        "0": 315,
+        "1": 170
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 75
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Mask",
+          "type": "MASK",
+          "links": [
+            88
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "Heatmap Mask",
+          "type": "IMAGE",
+          "links": [
+            62
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "BW Mask",
+          "type": "IMAGE",
+          "links": [
+            63
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPSeg"
+      },
+      "widgets_values": [
+        "woman",
+        7,
+        0.4,
+        5
+      ]
+    },
+    {
+      "id": 21,
+      "type": "VAEEncodeForInpaint",
+      "pos": [
+        1377,
+        1001
+      ],
+      "size": {
+        "0": 210,
+        "1": 66
+      },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 79
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 96
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 98
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            92
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncodeForInpaint"
+      }
+    },
+    {
+      "id": 24,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1309,
+        494
+      ],
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 85
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            93
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Positive Prompt",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "girl, yellow hat, blue skirt, pretty, blue sunny sky"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1312,
+        738
+      ],
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 86
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            94
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "deformed, ugly, artifacts, extra limbs, jpg"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "CombineSegMasks",
+      "pos": [
+        159.79352424762646,
+        1027.173503459379
+      ],
+      "size": {
+        "0": 317.4000244140625,
+        "1": 86
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input_image",
+          "type": "IMAGE",
+          "link": 77
+        },
+        {
+          "name": "mask_1",
+          "type": "MASK",
+          "link": 88
+        },
+        {
+          "name": "mask_2",
+          "type": "MASK",
+          "link": 87
+        },
+        {
+          "name": "mask_3",
+          "type": "MASK",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Combined Mask",
+          "type": "MASK",
+          "links": [
+            98
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "Heatmap Mask",
+          "type": "IMAGE",
+          "links": [
+            70
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "BW Mask",
+          "type": "IMAGE",
+          "links": [
+            71
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CombineSegMasks"
+      }
+    },
+    {
+      "id": 52,
+      "type": "VAEDecode",
+      "pos": [
+        2267,
+        947
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 100
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 101
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            99
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 22,
+      "type": "KSampler",
+      "pos": [
+        1903,
+        913
+      ],
+      "size": {
+        "0": 315,
+        "1": 262
+      },
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 89
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 93
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 94
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 92
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            100
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        845940526752100,
+        false,
+        20,
+        7,
+        "euler_ancestral",
+        "karras",
+        0.8
+      ]
+    },
+    {
+      "id": 23,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        892,
+        854
+      ],
+      "size": {
+        "0": 315,
+        "1": 98
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            89
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            85,
+            86
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            96,
+            101
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "v1.5\\realisticVisionV20_v20.safetensors"
+      ]
+    },
+    {
+      "id": 27,
+      "type": "PreviewImage",
+      "pos": [
+        2556,
+        947
+      ],
+      "size": {
+        "0": 210,
+        "1": 250
+      },
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 99
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    }
+  ],
+  "links": [
+    [
+      10,
+      12,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      62,
+      46,
+      1,
+      28,
+      0,
+      "IMAGE"
+    ],
+    [
+      63,
+      46,
+      2,
+      31,
+      0,
+      "IMAGE"
+    ],
+    [
+      64,
+      47,
+      1,
+      39,
+      0,
+      "IMAGE"
+    ],
+    [
+      65,
+      47,
+      2,
+      40,
+      0,
+      "IMAGE"
+    ],
+    [
+      70,
+      50,
+      1,
+      41,
+      0,
+      "IMAGE"
+    ],
+    [
+      71,
+      50,
+      2,
+      42,
+      0,
+      "IMAGE"
+    ],
+    [
+      75,
+      12,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      76,
+      12,
+      0,
+      47,
+      0,
+      "IMAGE"
+    ],
+    [
+      77,
+      12,
+      0,
+      50,
+      0,
+      "IMAGE"
+    ],
+    [
+      79,
+      12,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      85,
+      23,
+      1,
+      24,
+      0,
+      "CLIP"
+    ],
+    [
+      86,
+      23,
+      1,
+      25,
+      0,
+      "CLIP"
+    ],
+    [
+      87,
+      47,
+      0,
+      50,
+      2,
+      "MASK"
+    ],
+    [
+      88,
+      46,
+      0,
+      50,
+      1,
+      "MASK"
+    ],
+    [
+      89,
+      23,
+      0,
+      22,
+      0,
+      "MODEL"
+    ],
+    [
+      92,
+      21,
+      0,
+      22,
+      3,
+      "LATENT"
+    ],
+    [
+      93,
+      24,
+      0,
+      22,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      94,
+      25,
+      0,
+      22,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      96,
+      23,
+      2,
+      21,
+      1,
+      "VAE"
+    ],
+    [
+      98,
+      50,
+      0,
+      21,
+      2,
+      "MASK"
+    ],
+    [
+      99,
+      52,
+      0,
+      27,
+      0,
+      "IMAGE"
+    ],
+    [
+      100,
+      22,
+      0,
+      52,
+      0,
+      "LATENT"
+    ],
+    [
+      101,
+      23,
+      2,
+      52,
+      1,
+      "VAE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "Segmentation Masks",
+      "bounding": [
+        -651,
+        446,
+        739,
+        1281
+      ],
+      "color": "#3f789e"
+    },
+    {
+      "title": "Combine Masks",
+      "bounding": [
+        125,
+        675,
+        690,
+        702
+      ],
+      "color": "#3f789e"
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
