@@ -1,5 +1,6 @@
 from transformers import CLIPSegProcessor, CLIPSegForImageSegmentation
 
+from tqdm.auto import tqdm
 from PIL import Image
 import torch
 import torchvision.transforms as T
@@ -88,6 +89,8 @@ class CLIPSeg:
                         "blur": ("FLOAT", {"min": 0, "max": 15, "step": 0.1, "default": 7}),
                         "threshold": ("FLOAT", {"min": 0, "max": 1, "step": 0.05, "default": 0.4}),
                         "dilation_factor": ("INT", {"min": 0, "max": 10, "step": 1, "default": 4}),
+                        "use_cuda": ("BOOLEAN", {"default": True}),
+                        "every_batch": ("BOOLEAN", {"default": False}),
                     }
                 }
 
@@ -96,7 +99,7 @@ class CLIPSeg:
     RETURN_NAMES = ("Mask","Heatmap Mask", "BW Mask")
 
     FUNCTION = "segment_image"
-    def segment_image(self, image: torch.Tensor, text: str, blur: float, threshold: float, dilation_factor: int) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def segment_image(self, image: torch.Tensor, text: str, blur: float, threshold: float, dilation_factor: int, use_cuda: bool, every_batch: bool) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Create a segmentation mask from an image and a text prompt using CLIPSeg.
 
         Args:
@@ -109,67 +112,88 @@ class CLIPSeg:
         Returns:
             Tuple[torch.Tensor, torch.Tensor, torch.Tensor]: The segmentation mask, the heatmap mask, and the binarized mask.
         """
-            
-        # Convert the Tensor to a PIL image
-        image_np = image.numpy().squeeze()  # Remove the first dimension (batch size of 1)
-        # Convert the numpy array back to the original range (0-255) and data type (uint8)
-        image_np = (image_np * 255).astype(np.uint8)
-        # Create a PIL image from the numpy array
-        i = Image.fromarray(image_np, mode="RGB")
+        lst_tensor_bw = []
+        lst_image_out_heatmap = []
+        lst_image_out_binary = []
 
+        device = torch.device("cuda" if torch.cuda.is_available() and use_cuda else "cpu")
+        
         processor = CLIPSegProcessor.from_pretrained("CIDAS/clipseg-rd64-refined")
-        model = CLIPSegForImageSegmentation.from_pretrained("CIDAS/clipseg-rd64-refined")
+        model = CLIPSegForImageSegmentation.from_pretrained("CIDAS/clipseg-rd64-refined").to(device)
         
-        prompt = text
         
-        input_prc = processor(text=prompt, images=i, padding="max_length", return_tensors="pt")
+        range_limit = 1 if not every_batch else image.shape[0]
         
-        # Predict the segemntation mask
-        with torch.no_grad():
-            outputs = model(**input_prc)
-        
-        tensor = torch.sigmoid(outputs[0]) # get the mask
-        
-        # Apply a threshold to the original tensor to cut off low values
-        thresh = threshold
-        tensor_thresholded = torch.where(tensor > thresh, tensor, torch.tensor(0, dtype=torch.float))
+        # if it has more than one batch (batch size > 1), then execute the following code for each batch
+        for i in tqdm(range(range_limit), desc="Segmenting images"):
+            # Convert the Tensor to a PIL image
+            image_np = image[i].numpy().squeeze()
+            # Convert the numpy array back to the original range (0-255) and data type (uint8)
+            image_np = (image_np * 255).astype(np.uint8)
+            # Create a PIL image from the numpy array
+            i = Image.fromarray(image_np, mode="RGB")
+            
+            prompt = text
+            
+            input_prc = processor(text=prompt, images=i, padding="max_length", return_tensors="pt").to(device)
+            
+            # Predict the segemntation mask
+            with torch.no_grad():
+                outputs = model(**input_prc)
+            
+            tensor = torch.sigmoid(outputs[0]) # get the mask
+            
+            # Apply a threshold to the original tensor to cut off low values
+            thresh = threshold
+            tensor_thresholded = torch.where(tensor > thresh, tensor, torch.tensor(0, dtype=torch.float))
 
-        # Apply Gaussian blur to the thresholded tensor
-        sigma = blur
-        tensor_smoothed = gaussian_filter(tensor_thresholded.numpy(), sigma=sigma)
-        tensor_smoothed = torch.from_numpy(tensor_smoothed)
+            # Apply Gaussian blur to the thresholded tensor
+            sigma = blur
+            tensor_smoothed = gaussian_filter(tensor_thresholded.cpu().numpy(), sigma=sigma)
+            tensor_smoothed = torch.from_numpy(tensor_smoothed)
 
-        # Normalize the smoothed tensor to [0, 1]
-        mask_normalized = (tensor_smoothed - tensor_smoothed.min()) / (tensor_smoothed.max() - tensor_smoothed.min())
+            # Normalize the smoothed tensor to [0, 1]
+            mask_normalized = (tensor_smoothed - tensor_smoothed.min()) / (tensor_smoothed.max() - tensor_smoothed.min())
 
-        # Dilate the normalized mask
-        mask_dilated = dilate_mask(mask_normalized, dilation_factor)
+            # Dilate the normalized mask
+            mask_dilated = dilate_mask(mask_normalized, dilation_factor)
 
-        # Convert the mask to a heatmap and a binary mask
-        heatmap = apply_colormap(mask_dilated, cm.viridis)
-        binary_mask = apply_colormap(mask_dilated, cm.Greys_r)
+            # Convert the mask to a heatmap and a binary mask
+            heatmap = apply_colormap(mask_dilated, cm.viridis)
+            binary_mask = apply_colormap(mask_dilated, cm.Greys_r)
 
-        # Overlay the heatmap and binary mask on the original image
-        dimensions = (image_np.shape[1], image_np.shape[0])
-        heatmap_resized = resize_image(heatmap, dimensions)
-        binary_mask_resized = resize_image(binary_mask, dimensions)
+            # Overlay the heatmap and binary mask on the original image
+            dimensions = (image_np.shape[1], image_np.shape[0])
+            heatmap_resized = resize_image(heatmap, dimensions)
+            binary_mask_resized = resize_image(binary_mask, dimensions)
 
-        alpha_heatmap, alpha_binary = 0.5, 1
-        overlay_heatmap = overlay_image(image_np, heatmap_resized, alpha_heatmap)
-        overlay_binary = overlay_image(image_np, binary_mask_resized, alpha_binary)
+            alpha_heatmap, alpha_binary = 0.5, 1
+            overlay_heatmap = overlay_image(image_np, heatmap_resized, alpha_heatmap)
+            overlay_binary = overlay_image(image_np, binary_mask_resized, alpha_binary)
 
-        # Convert the numpy arrays to tensors
-        image_out_heatmap = numpy_to_tensor(overlay_heatmap)
-        image_out_binary = numpy_to_tensor(overlay_binary)
+            # Convert the numpy arrays to tensors
+            image_out_heatmap = numpy_to_tensor(overlay_heatmap)
+            image_out_binary = numpy_to_tensor(overlay_binary)
 
-        # Save or display the resulting binary mask
-        binary_mask_image = Image.fromarray(binary_mask_resized[..., 0])
+            # Save or display the resulting binary mask
+            binary_mask_image = Image.fromarray(binary_mask_resized[..., 0])
 
-        # convert PIL image to numpy array
-        tensor_bw = binary_mask_image.convert("RGB")
-        tensor_bw = np.array(tensor_bw).astype(np.float32) / 255.0
-        tensor_bw = torch.from_numpy(tensor_bw)[None,]
-        tensor_bw = tensor_bw.squeeze(0)[..., 0]
+            # convert PIL image to numpy array
+            tensor_bw = binary_mask_image.convert("RGB")
+            tensor_bw = np.array(tensor_bw).astype(np.float32) / 255.0
+            tensor_bw = torch.from_numpy(tensor_bw)[None,]
+            tensor_bw = tensor_bw.squeeze(0)[..., 0]
+            
+            lst_tensor_bw.append(tensor_bw)
+            lst_image_out_heatmap.append(image_out_heatmap)
+            lst_image_out_binary.append(image_out_binary)
+            
+        # image shape is (batch size, height, width, channels) 
+            
+        tensor_bw = torch.stack(lst_tensor_bw)
+        image_out_heatmap = torch.stack(lst_image_out_heatmap).squeeze(1)
+        image_out_binary = torch.stack(lst_image_out_binary).squeeze(1)
+            
 
         return tensor_bw, image_out_heatmap, image_out_binary
 
